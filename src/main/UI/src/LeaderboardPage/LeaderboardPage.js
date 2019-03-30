@@ -1,12 +1,13 @@
 import React from 'react';
 
-class RankBoard extends React.Component {
+class LeaderboardPage extends React.Component {
     render() {
         return (
             <div id="parent">
+                <h1>Test</h1>
             </div>
         );
     }
 }
 
-export default RankBoard;
+export default LeaderboardPage;
