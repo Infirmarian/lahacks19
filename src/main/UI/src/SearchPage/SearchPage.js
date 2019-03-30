@@ -21,7 +21,7 @@ class SearchPage extends React.Component {
                     <label>
                         Search for Zipcode
                         <input name="zipcode" placeholder="Enter Zipcode"/>
-                        <Link to="/leaderboards"><button id="submit">Search</button></Link>
+                        <Link to="/leaderboards/123"><button id="submit">Search</button></Link>
                     </label>
                 </form>
               </div>
