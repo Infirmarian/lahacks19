@@ -21,6 +21,15 @@
         <servlet-name>register</servlet-name>
         <url-pattern>/api/register</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>updateWater</servlet-name>
+        <servlet-class>myapp.UpdateWaterInfo</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>updateWater</servlet-name>
+        <url-pattern>/api/updatewater</url-pattern>
+    </servlet-mapping>
     
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

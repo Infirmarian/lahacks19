@@ -2,13 +2,16 @@ package myapp;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.repackaged.com.google.gson.Gson;
+import com.google.gson.Gson;
+
+import myapp.dbconnector.Statement;
 
 
 public class RegisterMeter extends HttpServlet {
@@ -23,13 +26,16 @@ public class RegisterMeter extends HttpServlet {
         String input = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
         RegistrationData regData = gson.fromJson(input, RegistrationData.class);
-        if(regData.latitude == null || regData.longitude == null || regData.uuid == null){
+        if(regData.latitude == null || regData.longitude == null){
             out.print(gson.toJson(new ResponseJSON(false, "One or more expected registration data pieces were missing")));
             out.flush();
             return;
         }
-        System.out.println(regData.uuid);
-        out.print(gson.toJson(new ResponseJSON(true)));
+        UUID uuid = UUID.randomUUID();
+        String sqlstatement = String.format("INSERT INTO meters(id, latitude, longitude, registrationdate) VALUES ('%s', %f, %f, NOW())", uuid.toString(), regData.latitude, regData.longitude);
+        Statement psqlwriter = Statement.getInstance();
+        psqlwriter.WriteStatement(sqlstatement);
+        out.print(gson.toJson(new ResponseJSON(true, uuid)));
         out.flush();
 
     }catch(Exception e){
@@ -48,15 +54,20 @@ public class RegisterMeter extends HttpServlet {
           this.success = success;
           this.error = "";
       }
+      ResponseJSON(boolean success, UUID uuid){
+        this.success = success;
+        this.error = "";
+        this.uuid = uuid.toString();
+    }
       private boolean success;
       private String error;
+      private String uuid;
   }
 
   private class RegistrationData{
     RegistrationData(){}
     private Double latitude;
     private Double longitude;
-    private String uuid;
 }
 
 }

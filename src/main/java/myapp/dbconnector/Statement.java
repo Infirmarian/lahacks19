@@ -16,20 +16,24 @@ public class Statement {
     private final String CLOUD_SQL_INSTANCE_NAME = System.getenv("CLOUD_SQL_INSTANCE_NAME");
     private DataSource pool;
     
-    public static Statement instance;
+    private static Statement instance;
     public Statement(){
-        if(instance == null){
-            instance = this;
-        }
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(String.format("jdbc:postgresql:///%s", DB_NAME));
         config.setUsername(DB_USER); 
         config.setPassword(DB_PASS);
+
         config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.postgres.SocketFactory");
         config.addDataSourceProperty("cloudSqlInstance", CLOUD_SQL_INSTANCE_NAME);
 
         pool = new HikariDataSource(config);
+    }
 
+    public static Statement getInstance(){
+        if(instance == null){
+            instance = new Statement();
+        }
+        return instance;
     }
 
     public boolean WriteStatement(String query){
