@@ -2,7 +2,6 @@ package myapp;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServlet;
@@ -30,7 +29,7 @@ public class RegisterMeter extends HttpServlet {
             return;
         }
         System.out.println(regData.uuid);
-        out.print(gson.toJson(new ResponseJSON(true, "")));
+        out.print(gson.toJson(new ResponseJSON(true)));
         out.flush();
 
     }catch(Exception e){
@@ -44,6 +43,10 @@ public class RegisterMeter extends HttpServlet {
       ResponseJSON(boolean success, String error){
           this.success = success;
           this.error = error;
+      }
+      ResponseJSON(boolean success){
+          this.success = success;
+          this.error = "";
       }
       private boolean success;
       private String error;
