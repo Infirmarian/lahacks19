@@ -49,10 +49,7 @@ public class RegisterMeter extends HttpServlet {
       ResponseJSON(boolean success, String error){
           this.success = success;
           this.error = error;
-      }
-      ResponseJSON(boolean success){
-          this.success = success;
-          this.error = "";
+          this.uuid = "";
       }
       ResponseJSON(boolean success, UUID uuid){
         this.success = success;

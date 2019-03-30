@@ -31,3 +31,5 @@ buildNumber.properties
 .project
 .settings/
 .vscode/
+embedded.log
+__pycache__/
