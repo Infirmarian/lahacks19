@@ -5,9 +5,15 @@ class SearchPage extends React.Component {
     render() {
         return (
             <div id="parent">
-            <Link to="/map/123">Map Page</Link>
-            <br/>
-            <Link to="/stats/123">Stats Page</Link>
+                <form type = "text">
+                    <label>
+                        Search for Address
+                        <input name="address" placeholder="Enter Address"/>
+                    </label>
+                </form>
+                <Link to="/map/123" align="center">Map Page</Link>
+                <br/>
+                <Link to="/stats/123" align="center">Stats Page</Link>
             </div>
         );
     }
