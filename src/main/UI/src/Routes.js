@@ -10,7 +10,7 @@ class Routes extends React.Component {
         return (
             <Switch>
                 <Route exact path='/' component={SearchPage}/>
-                <Route path='/map/{id}' component={MapPage}/>
+                <Route exact path='/map' component={MapPage}/>
                 <Route path='/stats/{id}' component={StatsPage}/>
             </Switch>
         );

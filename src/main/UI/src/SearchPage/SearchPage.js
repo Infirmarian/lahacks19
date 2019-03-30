@@ -11,7 +11,7 @@ class SearchPage extends React.Component {
                         <input name="address" placeholder="Enter Address"/>
                     </label>
                 </form>
-                <Link to="/map/123" align="center">Map Page</Link>
+                <Link to="/map" align="center">Map Page</Link>
                 <br/>
                 <Link to="/stats/123" align="center">Stats Page</Link>
             </div>
