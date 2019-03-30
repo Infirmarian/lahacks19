@@ -25,3 +25,11 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+
+.classpath
+.factorypath
+.project
+.settings/
+.vscode/
+embedded.log
+__pycache__/
