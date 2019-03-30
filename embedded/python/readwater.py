@@ -15,6 +15,8 @@ def get_simulated_water():
         with open("data/water.json", "r") as f:
             data = json.load(f)
             water = data["water"]
+    else:
+        data = {"water":0}
     
     water += (random.random()+1) * 8
     data["water"] = water

@@ -40,6 +40,7 @@ public class RegisterMeter extends HttpServlet {
 
     }catch(Exception e){
         ResponseJSON rj = new ResponseJSON(false, e.toString());
+        e.printStackTrace(System.out);
         out.print(gson.toJson(rj));
         out.flush();
 
