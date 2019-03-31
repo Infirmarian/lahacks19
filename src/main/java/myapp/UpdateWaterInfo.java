@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.repackaged.com.google.gson.Gson;
+import com.google.gson.Gson;
 
 import myapp.dbconnector.Statement;
 
@@ -28,7 +28,7 @@ public class UpdateWaterInfo extends HttpServlet {
 				out.flush();
 				return;
 			}
-			String statement = String.format("UPDATE meters SET water=%f WHERE id='%s'", requestBody.water, requestBody.uuid);
+			String statement = String.format("INSERT INTO water(id, time, water) VALUES ('%s', TIMEZONE('utc', NOW()), %f)", requestBody.uuid, requestBody.water);
 			Statement.getInstance().WriteStatement(statement);
 			out.print(gson.toJson(new Response(true, "")));
 		}catch (Exception e){

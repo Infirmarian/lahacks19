@@ -18,7 +18,7 @@ class MapContainer extends Component {
       "month":600},
 
       {"latitude": 34.0526,
-      "longitude": -118.420,
+      "longitude": -118.419,
        "day": 10,
       "week":101,
       "month":570}
@@ -72,12 +72,18 @@ class MapContainer extends Component {
             return <Marker position={{lat: home.lats, lng: home.longs}}
             icon = {{url: "http://www.clker.com/cliparts/Z/w/m/h/m/A/light-blue-rounded-square.svg.hi.png",
             scaledSize: {width: 16, height: 50*home.heights},}}
+            onClick = {()=>this.onToggleOpen(index)}
             >
-
+            {this.state.isOpen[index] && <InfoWindow onCloseClick = {() =>this.onToggleOpen(index)}>
+            <div>
+                {home.heights}
+            </div>
+            </InfoWindow>}
             </Marker>;
             })
           }
-          />
+          
+
       </GoogleMap>
    ));
 
