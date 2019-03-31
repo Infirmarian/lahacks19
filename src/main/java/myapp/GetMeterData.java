@@ -20,7 +20,7 @@ public class GetMeterData extends HttpServlet {
       	throws IOException {
         Gson gson = new Gson();
         PrintWriter out = resp.getWriter();
-        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        resp.addHeader("Access-Control-Allow-Origin", "https://lahacks-ui.appspot.com");
 
         try{
             String input = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));

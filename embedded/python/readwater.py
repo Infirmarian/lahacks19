@@ -8,6 +8,7 @@ def get_water_reading():
 
 def get_simulated_water():
     water = 0
+    seed = 1
     if not os.path.isdir("data"):
         os.mkdir("data")
 
@@ -15,10 +16,11 @@ def get_simulated_water():
         with open("data/water.json", "r") as f:
             data = json.load(f)
             water = data["water"]
+            seed = data["seed"]
     else:
-        data = {"water":0}
+        data = {"water":0, "seed":random.random()}
     
-    water += (random.random()+1) * 8
+    water += seed * (random.random()+1) * 8
     data["water"] = water
     with open("data/water.json", "w") as f:
         json.dump(data, f)
