@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {GoogleMap, withGoogleMap, Marker} from 'react-google-maps';
+import {GoogleMap, withGoogleMap, Marker, InfoWindow} from 'react-google-maps';
  
 class MapContainer extends Component {
 
@@ -19,18 +19,41 @@ class MapContainer extends Component {
 
       {"latitude": 34.0526,
       "longitude": -118.420,
-       "day": 21,
+       "day": 10,
       "week":101,
-      "month":570}]
+      "month":570}
+    ],
+    isOpen: {}
+  };
+  onToggleOpen = (id) => {
+    this.setState({
+      isOpen: {...this.state.isOpen, [id]: !this.state.isOpen[id]}
+    });
   }
 
   render() {
+
     var houseCoordinates = [];
+    var heights = [];
     var givenCoordinates = this.state.fakeData.map((house, index) => {
-      houseCoordinates[index] = {lats: house.latitude, longs: house.longitude};
+      heights[index]=house.day;
+      return heights[index];
+    })
+
+    var max = 0;
+    for(var i=0;i<heights.length; i++)
+    {
+      if(max< heights[i])
+      {
+        max = heights[i];
+      }
+    }
+    
+    var givenCoordinates = this.state.fakeData.map((house, index) => {
+      houseCoordinates[index] = {lats: house.latitude, longs: house.longitude, heights: house.day/max};
       return houseCoordinates[index];
     })
-    
+
     const GoogleMapExample = withGoogleMap(props => (
       <GoogleMap
         defaultCenter = { { lat: 34.0522, lng: -118.420 } }
@@ -45,8 +68,13 @@ class MapContainer extends Component {
         }}
         
       >
-         {houseCoordinates.map((home) => {
-            return <Marker position={{lat: home.lats, lng: home.longs}}/>;
+         {houseCoordinates.map((home, index) => {
+            return <Marker position={{lat: home.lats, lng: home.longs}}
+            icon = {{url: "http://www.clker.com/cliparts/Z/w/m/h/m/A/light-blue-rounded-square.svg.hi.png",
+            scaledSize: {width: 16, height: 50*home.heights},}}
+            >
+
+            </Marker>;
             })
           }
           />
