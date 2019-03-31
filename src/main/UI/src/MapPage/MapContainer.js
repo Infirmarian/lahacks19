@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {GoogleMap, withGoogleMap, Marker, InfoWindow} from 'react-google-maps';
- 
+
 class MapContainer extends Component {
 
   state = {
@@ -33,9 +33,8 @@ class MapContainer extends Component {
 
   render() {
 
-    var houseCoordinates = [];
     var heights = [];
-    var givenCoordinates = this.state.fakeData.map((house, index) => {
+    var heightCoordinates = this.state.fakeData.map((house, index) => {
       heights[index]=house.day;
       return heights[index];
     })
@@ -49,9 +48,17 @@ class MapContainer extends Component {
       }
     }
     
-    var givenCoordinates = this.state.fakeData.map((house, index) => {
-      houseCoordinates[index] = {lats: house.latitude, longs: house.longitude, heights: house.day/max};
-      return houseCoordinates[index];
+    var workingCoordinates = []
+    var newCoordinates = this.state.fakeData.map((house, index) => {
+      workingCoordinates[index] = {
+      "height": house.day/max,
+      "latitude": house.latitude,
+      "longitude": house.longitude,
+      "day": house.day,
+      "week": house.week,
+      "month": house.month
+        };
+      return workingCoordinates[index];
     })
 
     const GoogleMapExample = withGoogleMap(props => (
@@ -68,15 +75,15 @@ class MapContainer extends Component {
         }}
         
       >
-         {houseCoordinates.map((home, index) => {
-            return <Marker position={{lat: home.lats, lng: home.longs}}
+         {workingCoordinates.map((home, index) => {
+            return <Marker position={{lat: home.latitude, lng: home.longitude}}
             icon = {{url: "http://www.clker.com/cliparts/Z/w/m/h/m/A/light-blue-rounded-square.svg.hi.png",
-            scaledSize: {width: 16, height: 50*home.heights},}}
+            scaledSize: {width: 16, height: 50*home.height},}}
             onClick = {()=>this.onToggleOpen(index)}
             >
             {this.state.isOpen[index] && <InfoWindow onCloseClick = {() =>this.onToggleOpen(index)}>
             <div>
-                {home.heights}
+                {home.height}
             </div>
             </InfoWindow>}
             </Marker>;
@@ -93,8 +100,6 @@ class MapContainer extends Component {
           containerElement={ <div style={{ height: `500px`, width: '500px' }} /> }
           mapElement={ <div style={{ height: `100%` }} /> }
         >
-
-            
 
         </GoogleMapExample>
 
