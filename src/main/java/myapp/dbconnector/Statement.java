@@ -62,6 +62,14 @@ public class Statement {
             return 0;
         }
     }
+    public boolean InsertOrUpdateCheck(String query){
+        try (Connection connection = pool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            return statement.executeUpdate() > 0;
+        }catch(Exception e){
+            return false;
+        }
+    }
     public ArrayList<Double[]> getWaterData(String stmt){
         ArrayList<Double[]> result = new ArrayList<>();
         try(Connection connection = pool.getConnection()){

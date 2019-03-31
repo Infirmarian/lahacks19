@@ -47,10 +47,12 @@ public class RegisterMeter extends HttpServlet {
         UUID uuid = UUID.randomUUID();
         String sqlstatement = String.format("INSERT INTO meters(id, latitude, longitude, registrationdate) VALUES ('%s', %f, %f, NOW())", uuid.toString(), finalLat.one, finalLat.two);
         Statement psqlwriter = Statement.getInstance();
-        psqlwriter.WriteStatement(sqlstatement);
-        out.print(gson.toJson(new ResponseJSON(true, uuid)));
-        out.flush();
-
+        if(psqlwriter.InsertOrUpdateCheck(sqlstatement)){
+            out.print(gson.toJson(new ResponseJSON(true, uuid)));
+            out.flush();
+        }else{
+            out.print(gson.toJson(new ResponseJSON(false, "Unable to insert into table")));
+        }
     }catch(Exception e){
         ResponseJSON rj = new ResponseJSON(false, e.toString());
         e.printStackTrace(System.out);
