@@ -8,7 +8,6 @@ class SearchPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            address: '',
             lat: 0,
             long: 0
         }
