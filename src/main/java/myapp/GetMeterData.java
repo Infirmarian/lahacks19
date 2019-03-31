@@ -28,7 +28,7 @@ public class GetMeterData extends HttpServlet {
                 out.flush();
                 return;
             }
-            // Swap if coordinates are misordered
+            // Swap if coordinates are misorder
             if(request.long1 > request.long2){
                 double temp = request.long1;
                 request.long1 = request.long2;
