@@ -51,8 +51,16 @@ def post_update():
             data = json.load(f)
             uuid = data["uuid"]
     water = readwater.get_water_reading()
-    update_data = {"uuid":uuid, "water":water}
-    requests.post("http://lahacks.appspot.com/api/updatewater", data=update_data)    
+    update_data = json.dumps({"uuid":uuid, "water":water})
+    response = requests.post("http://lahacks.appspot.com/api/updatewater", data=update_data)    
+    if response.status_code == 200:
+        result = response.json()
+        if result["success"]:
+            logging.info("Successfully posted water update")
+        else:
+            logging.warning("Error posting water update: "+result["error"])
+    else:
+        logging.error("Bad response code {}, unable to update water level".format(response.status_code))
     
 
 def main():
