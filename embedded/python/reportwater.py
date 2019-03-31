@@ -65,9 +65,14 @@ def post_update():
 
 def main():
     interval = int(sys.argv[1])
-    while True:
-        post_update()
-        time.sleep(interval)
+    if(len(sys.argv) == 3):
+        for i in range(0, int(sys.argv[2])):
+            post_update()
+            time.sleep(interval)
+    else:
+        while True:
+            post_update()
+            time.sleep(interval)
 
 if __name__ == "__main__":
     main()

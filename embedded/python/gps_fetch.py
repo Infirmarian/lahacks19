@@ -22,4 +22,6 @@ def get_gps_data():
             print('Latitude = ', data_stream.TPV['lat'])
 
 def simulate_coordinates():
-    return {"latitude": 34+(random.random()*(34.1-34)), "longitude": -118.5 + (random.random()*(-118.5 - -118.3))}
+    lat1 = 34.055588 + (random.random() * (34.050521 - 34.055588))
+    long1 = -118.418282 + (random.random() * (-118.418282 + 118.423174))
+    return {"latitude": lat1, "longitude": long1}

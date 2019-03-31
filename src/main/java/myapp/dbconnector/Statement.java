@@ -8,6 +8,7 @@ import myapp.utilities.Pair;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -42,39 +43,56 @@ public class Statement {
     }
 
     public boolean WriteStatement(String query){
+        PreparedStatement statement = null;
         try (Connection connection = pool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
             statement.execute();
         }catch(Exception e){
             return false;
+        }finally{
+            if(statement != null)
+                try{ statement.close();}catch(SQLException e){}
         }
         return true;
     }
     public int WriteStatementCountRows(String query){
+        PreparedStatement statement = null;
+        ResultSet rs = null;
         try (Connection connection = pool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet rs = statement.executeQuery();
+            statement = connection.prepareStatement(query);
+            rs = statement.executeQuery();
             int count = 0;
             while(rs.next())
                 count++;
             return count;
         }catch(Exception e){
             return 0;
+        }finally{
+            if(statement != null)
+                try{ statement.close();}catch(SQLException e){}
+            if(rs != null)
+                try{ rs.close(); }catch(SQLException e){}
         }
     }
     public boolean InsertOrUpdateCheck(String query){
+        PreparedStatement statement = null;
         try (Connection connection = pool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
             return statement.executeUpdate() > 0;
         }catch(Exception e){
             return false;
+        }finally{
+            if(statement != null)
+                try{ statement.close();}catch(SQLException e){}
         }
     }
     public ArrayList<Double[]> getWaterData(String stmt){
         ArrayList<Double[]> result = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
         try(Connection connection = pool.getConnection()){
-            PreparedStatement statement = connection.prepareStatement(stmt);
-            ResultSet rs = statement.executeQuery();
+            statement = connection.prepareStatement(stmt);
+            rs = statement.executeQuery();
             while(rs.next()){
                 Double[] data = new Double[6];
                 data[0] = rs.getDouble("latitude");
@@ -88,8 +106,12 @@ public class Statement {
         }catch(Exception e){
             System.err.println(e);
             return null;
+        }finally{
+            if(statement != null)
+                try{ statement.close();}catch(SQLException e){}
+            if(rs != null)
+                try{ rs.close();}catch(SQLException e){}
         }
         return result;
     }
-
 }

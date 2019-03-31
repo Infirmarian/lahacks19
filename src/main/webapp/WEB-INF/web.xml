@@ -13,7 +13,7 @@
    </init-param>
    <init-param>
       <param-name>cors.allowOrigin</param-name>
-      <param-value>http://localhost:3000</param-value>
+      <param-value>https://lahacks-ui.appspot.com</param-value>
    </init-param>
    <init-param>
       <param-name>cors.allowSubdomains</param-name>
@@ -35,10 +35,6 @@
       <param-value>3600</param-value>
    </init-param>
     </filter>
-    <init-param>
-        <param-name>cors.allowOrigin</param-name>
-        <param-value>http://localhost:3000</param-value>
-    </init-param>
 
     <filter-mapping>
         <filter-name>CORS</filter-name>
