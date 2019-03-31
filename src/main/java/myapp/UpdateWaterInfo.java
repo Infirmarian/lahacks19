@@ -28,12 +28,9 @@ public class UpdateWaterInfo extends HttpServlet {
 				out.flush();
 				return;
 			}
-			String statement = String.format("UPDATE meters SET water=%f WHERE id='%s' RETURNING id", requestBody.water, requestBody.uuid);
-			int x = Statement.getInstance().WriteStatementCountRows(statement);
-			if(x == 0)
-				out.print(gson.toJson(new Response(false, "No matching UUID was found")));
-			else
-				out.print(gson.toJson(new Response(true, "")));
+			String statement = String.format("INSERT INTO water(id, time, water) VALUES ('%s', TIMEZONE('utc', NOW()), %f)", requestBody.uuid, requestBody.water);
+			Statement.getInstance().WriteStatement(statement);
+			out.print(gson.toJson(new Response(true, "")));
 		}catch (Exception e){
 			out.print(gson.toJson(new Response(false, e.toString())));
 		}
