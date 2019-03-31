@@ -6,7 +6,7 @@ import logging
 import sys
 import time
 import readwater
-import gps
+import gps_fetch as gps
 
 
 def register_meter():

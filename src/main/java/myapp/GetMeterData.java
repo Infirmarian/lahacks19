@@ -20,6 +20,8 @@ public class GetMeterData extends HttpServlet {
       	throws IOException {
         Gson gson = new Gson();
         PrintWriter out = resp.getWriter();
+        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
         try{
             String input = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             Request request = gson.fromJson(input, Request.class);
@@ -28,7 +30,7 @@ public class GetMeterData extends HttpServlet {
                 out.flush();
                 return;
             }
-            // Swap if coordinates are misordered
+            // Swap if coordinates are misorder
             if(request.long1 > request.long2){
                 double temp = request.long1;
                 request.long1 = request.long2;
@@ -40,14 +42,11 @@ public class GetMeterData extends HttpServlet {
                 request.lat2 = temp;
             }
             
-            String statement = String.format("SELECT m.id, m.latitude, m.longitude, wdata.now, wdata.day, wdata.week, wdata.month FROM meters m "+
-            "JOIN("+
-                "SELECT water.time, water.id, water.water as now, wday.day as day, wweek.week as week, wmonth.month as month "+
-                    "FROM water "+
-                "LEFT JOIN(SELECT id, water as day, time FROM water ORDER BY water.time DESC LIMIT 1 OFFSET 24) wday ON wday.id = water.id "+
-                "LEFT JOIN(SELECT id, water as week, time FROM water ORDER BY water.time DESC LIMIT 1 OFFSET 168) wweek ON wweek.id = water.id "+
-                "LEFT JOIN(SELECT id, water as month, time FROM water ORDER BY water.time DESC LIMIT 1 OFFSET 720) wmonth ON wmonth.id = water.id "+
-                "ORDER BY water.time DESC LIMIT 1) as wdata ON wdata.id = m.id "+
+            String statement = String.format("SELECT m.id, m.latitude, m.longitude, now.now, day.day, week.week, month.month FROM meters m "+
+            "JOIN(SELECT w.id, w.water as now FROM (SELECT id, water, time, ROW_NUMBER () OVER (PARTITION BY id ORDER BY time DESC) as row FROM water ORDER BY time DESC) as w WHERE w.row = 1) now ON now.id = m.id "+
+            "JOIN(SELECT w.id, w.water as day FROM (SELECT id, water, time, ROW_NUMBER () OVER (PARTITION BY id ORDER BY time DESC) as row FROM water ORDER BY time DESC) as w WHERE w.row = 25) day ON day.id = m.id "+
+            "LEFT JOIN(SELECT w.id, w.water as week FROM (SELECT id, water, time, ROW_NUMBER () OVER (PARTITION BY id ORDER BY time DESC) as row FROM water ORDER BY time DESC) as w WHERE w.row = 169) week ON week.id = m.id "+
+            "LEFT JOIN(SELECT w.id, w.water as month FROM (SELECT id, water, time, ROW_NUMBER () OVER (PARTITION BY id ORDER BY time DESC) as row FROM water ORDER BY time DESC) as w WHERE w.row = 721) month ON month.id = m.id "+
             "WHERE latitude > %f AND latitude < %f AND longitude > %f AND longitude < %f;", request.lat1, request.lat2, request.long1, request.long2);
             ArrayList<Double[]> data = Statement.getInstance().getWaterData(statement);
             Response response = new Response(data.size());
