@@ -30,6 +30,6 @@ class MapPage extends React.Component {
         );
     }
 }
-
+//
 withRouter(MapPage);
 export default MapPage;
