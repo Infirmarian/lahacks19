@@ -20,11 +20,9 @@ public class GetMeterData extends HttpServlet {
       	throws IOException {
         Gson gson = new Gson();
         PrintWriter out = resp.getWriter();
+        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
         try{
-            resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-            resp.addHeader("Access-Control-Allow-Methods", "POST");
-            resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-            resp.setHeader("Access-Control-Max-Age", "86400");
             String input = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             Request request = gson.fromJson(input, Request.class);
             if(request.long1 == null || request.long2 == null || request.lat1 == null || request.lat2 == null){
