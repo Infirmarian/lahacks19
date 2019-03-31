@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import MapContainer from './MapContainer';
-import PropTypes from 'prop-types';
 
 class MapPage extends React.Component {
     parseLat(path) {
@@ -30,6 +29,6 @@ class MapPage extends React.Component {
         );
     }
 }
-//
+
 withRouter(MapPage);
 export default MapPage;
