@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import MapContainer from './MapContainer';
+import RankBoard from './RankBoard';
 
 const getURL = 'http://lahacks.appspot.com/api/fetchwater'
 
@@ -74,7 +75,13 @@ class MapPage extends React.Component {
         console.log({myLat});
         console.log({myLng});
         return (
-            <MapContainer/>
+            <div id="parent">
+                <MapContainer/>
+                <div align="right">
+                    <RankBoard/>
+                </div>
+                
+            </div>
         );
     }
 }
