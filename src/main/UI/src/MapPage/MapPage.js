@@ -4,6 +4,7 @@ import MapContainer from './MapContainer';
 import PropTypes from 'prop-types';
 
 const getURL = 'http://lahacks.appspot.com/api/fetchwater'
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 
 const throwError = async (resp) => {
@@ -42,18 +43,17 @@ class MapPage extends React.Component {
     parseLng(path) {
         return path.substr(path.indexOf("/", 5) + 1);
     }
-  /*  componentDidMount() {
+    componentDidMount() {
         this.loadData();
     }
     async loadData() {
-        const response = await fetch(getURL, {
+        const response = await fetch(proxyurl + getURL, {
             method: "POST",
-            mode: 'cors',
             body: JSON.stringify({
-                lat1: 34.060,
-                lat2: 34.050,
-                long1: -118.410,
-                long2: -118.43
+                lat1: 30.060,
+                lat2: 44.050,
+                long1: -100.410,
+                long2: -150.43
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -63,12 +63,12 @@ class MapPage extends React.Component {
             throwError(response);
         }
         const data = await response.json();
-        console.log(data);
+        console.log(data.results);
         this.setState({ 
             houseData: data.results 
         });
 
-    }*/
+    }
     render() {
         const url = this.props.history.location;
         const myLat = parseFloat(this.parseLat(url.pathname));

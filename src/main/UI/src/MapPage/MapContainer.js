@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {GoogleMap, withGoogleMap, Marker, InfoWindow} from 'react-google-maps';
+import Select from '@material-ui/core/Select';
 
 class MapContainer extends Component {
   constructor(props) {
@@ -72,8 +73,8 @@ class MapContainer extends Component {
         defaultCenter = { { lat: this.state.centerLat, lng: this.state.centerLng } }
         defaultZoom = { 18 }
         defaultOptions={{
-          disableDefaultUI: false, // disable default map UI
-          draggable: true, // make map draggable
+          disableDefaultUI: true, // disable default map UI
+          draggable: false, // make map draggable
           keyboardShortcuts: false, // disable keyboard shortcuts
           scaleControl: false, // allow scale controle
           scrollwheel: false,
@@ -98,12 +99,14 @@ class MapContainer extends Component {
           
 
       </GoogleMap>
+
    ));
 
     return (
     <div>
+        <Select/>
         <GoogleMapExample
-          containerElement={ <div style={{ height: `500px`, width: '500px' }} /> }
+          containerElement={ <div style={{ height: `700px`, width: '700px' }} /> }
           mapElement={ <div style={{ height: `100%` }} /> }
         >
 
