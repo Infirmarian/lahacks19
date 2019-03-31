@@ -42,12 +42,13 @@ class MapPage extends React.Component {
     parseLng(path) {
         return path.substr(path.indexOf("/", 5) + 1);
     }
-    componentDidMount() {
+  /*  componentDidMount() {
         this.loadData();
     }
     async loadData() {
         const response = await fetch(getURL, {
             method: "POST",
+            mode: 'cors',
             body: JSON.stringify({
                 lat1: 34.060,
                 lat2: 34.050,
@@ -55,7 +56,7 @@ class MapPage extends React.Component {
                 long2: -118.43
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
         });
         if (!response.ok) {
@@ -67,15 +68,18 @@ class MapPage extends React.Component {
             houseData: data.results 
         });
 
-    }
+    }*/
     render() {
         const url = this.props.history.location;
-        const myLat = this.parseLat(url.pathname);
-        const myLng = this.parseLng(url.pathname);
+        const myLat = parseFloat(this.parseLat(url.pathname));
+        const myLng = parseFloat(this.parseLng(url.pathname));
         console.log({myLat});
         console.log({myLng});
         return (
-            <MapContainer/>
+            <MapContainer
+            centerLat = {myLat} 
+            centerLng = {myLng}
+            />
         );
     }
 }

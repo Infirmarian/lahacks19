@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {GoogleMap, withGoogleMap, Marker, InfoWindow} from 'react-google-maps';
 
 class MapContainer extends Component {
-
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {
     fakeData: [
       {"latitude": 34.0522,
       "longitude": -118.420,
@@ -23,13 +25,17 @@ class MapContainer extends Component {
       "week":101,
       "month":570}
     ],
-    isOpen: {}
-  };
+    isOpen: {},
+    centerLat: this.props.centerLat,
+    centerLng: this.props.centerLng,
+
+  }
+}
   onToggleOpen = (id) => {
     this.setState({
       isOpen: {...this.state.isOpen, [id]: !this.state.isOpen[id]}
     });
-  }
+  };
 
   render() {
 
@@ -63,7 +69,7 @@ class MapContainer extends Component {
 
     const GoogleMapExample = withGoogleMap(props => (
       <GoogleMap
-        defaultCenter = { { lat: 34.0522, lng: -118.420 } }
+        defaultCenter = { { lat: this.state.centerLat, lng: this.state.centerLng } }
         defaultZoom = { 18 }
         defaultOptions={{
           disableDefaultUI: false, // disable default map UI
@@ -106,6 +112,11 @@ class MapContainer extends Component {
       </div>
     );
   }
+};
+
+MapContainer.propTypes = {
+  centerLat: PropTypes.number.isRequired,
+  centerLng: PropTypes.number.isRequired,
 };
  
 export default MapContainer
