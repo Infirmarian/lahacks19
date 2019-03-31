@@ -28,6 +28,18 @@ public class GetMeterData extends HttpServlet {
                 out.flush();
                 return;
             }
+            // Swap if coordinates are misordered
+            if(request.long1 > request.long2){
+                double temp = request.long1;
+                request.long1 = request.long2;
+                request.long2 = temp;
+            }
+            if(request.lat1 > request.lat2){
+                double temp = request.lat1;
+                request.lat1 = request.lat2;
+                request.lat2 = temp;
+            }
+            
             String statement = String.format("SELECT m.id, m.latitude, m.longitude, wdata.now, wdata.day, wdata.week, wdata.month FROM meters m "+
             "JOIN("+
                 "SELECT water.time, water.id, water.water as now, wday.day as day, wweek.week as week, wmonth.month as month "+
